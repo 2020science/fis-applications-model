@@ -1,4 +1,4 @@
-# fis-applications-model
+# Futite of Innovation in Society high school aplications model
 A simple AI-generated model of factors potentially affecting applications to the ASU FIS BS
 
 This model was designed and created by the agentic AI Manus, then refined using ChatGPT and 03-mini-high.

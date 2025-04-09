@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BA in Innovation in Society - Application Model</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header class="bg-primary text-white py-4">
+        <div class="container">
+            <h1>BA in Innovation in Society</h1>
+            <h2>Application Projection Model</h2>
+        </div>
+    </header>
+    
+    <main class="container my-4">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Projected Applications</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="main-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Current Projection</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <h1 id="application-count" class="display-1">75</h1>
+                        <p class="lead">Projected Applications</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="compareScenarios()">Compare Scenarios</button>
+                            <button class="btn btn-outline-primary" onclick="saveCurrentScenario()">Save Scenario</button>
+                            <button class="btn btn-outline-primary" onclick="loadSavedScenario()">Load Saved Scenario</button>
+                            <button class="btn btn-outline-primary" onclick="clearSavedScenarios()">Clear Saved Scenarios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="modelTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="awareness-tab" data-bs-toggle="tab" data-bs-target="#awareness" type="button" role="tab" aria-controls="awareness" aria-selected="true">Program Awareness</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="interest-tab" data-bs-toggle="tab" data-bs-target="#interest" type="button" role="tab" aria-controls="interest" aria-selected="false">Student Interest</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="competition-tab" data-bs-toggle="tab" data-bs-target="#competition" type="button" role="tab" aria-controls="competition" aria-selected="false">Competition</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="internal-tab" data-bs-toggle="tab" data-bs-target="#internal" type="button" role="tab" aria-controls="internal" aria-selected="false">Internal Recruitment</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="external-tab" data-bs-toggle="tab" data-bs-target="#external" type="button" role="tab" aria-controls="external" aria-selected="false">External Environment</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="analysis-tab" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab" aria-controls="analysis" aria-selected="false">Analysis</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="scenarios-tab" data-bs-toggle="tab" data-bs-target="#scenarios" type="button" role="tab" aria-controls="scenarios" aria-selected="false">Scenarios</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="modelTabsContent">
+                            <!-- Program Awareness Tab -->
+                            <div class="tab-pane fade show active" id="awareness" role="tabpanel" aria-labelledby="awareness-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Marketing & Outreach</h4>
+                                        <div class="mb-3">
+                                            <label for="marketing-reach" class="form-label">Overall Marketing Reach <span id="marketing-reach-value">30%</span></label>
+                                            <input type="range" class="form-range" id="marketing-reach" min="0" max="100" value="30">
+                                            <small class="text-muted">Percentage of target audience reached by marketing efforts</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="high-school-visits" class="form-label">High School Visits <span id="high-school-visits-value">10</span></label>
+                                            <input type="range" class="form-range" id="high-school-visits" min="0" max="50" value="10">
+                                            <small class="text-muted">Number of high schools visited per year</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="digital-campaigns" class="form-label">Digital Campaigns <span id="digital-campaigns-value">2</span></label>
+                                            <input type="range" class="form-range" id="digital-campaigns" min="0" max="5" value="2">
+                                            <small class="text-muted">Number of digital marketing campaigns per year</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="social-media-presence" class="form-label">Social Media Presence</label>
+                                            <select class="form-select" id="social-media-presence">
+                                                <option value="low">Low</option>
+                                                <option value="medium" selected>Medium</option>
+                                                <option value="high">High</option>
+                                            </select>
+                                            <small class="text-muted">Level of activity and engagement on social media</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="info-sessions" class="form-label">Information Sessions <span id="info-sessions-value">5</span></label>
+                                            <input type="range" class="form-range" id="info-sessions" min="0" max="20" value="5">
+                                            <small class="text-muted">Number of information sessions per year</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Program Visibility</h4>
+                                        <div id="visibility-chart" class="chart-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Student Interest Tab -->
+                            <div class="tab-pane fade" id="interest" role="tabpanel" aria-labelledby="interest-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Target Student Demographics</h4>
+                                        <div class="mb-3">
+                                            <label for="traditional-students" class="form-label">Traditional Students <span id="traditional-students-value">60%</span></label>
+                                            <input type="range" class="form-range" id="traditional-students" min="0" max="100" value="60">
+                                            <small class="text-muted">Percentage of high school graduates interested in innovation</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="career-changers" class="form-label">Career Changers <span id="career-changers-value">30%</span></label>
+                                            <input type="range" class="form-range" id="career-changers" min="0" max="100" value="30">
+                                            <small class="text-muted">Percentage of career changers interested in innovation</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="adult-learners" class="form-label">Adult Learners <span id="adult-learners-value">10%</span></label>
+                                            <input type="range" class="form-range" id="adult-learners" min="0" max="100" value="10">
+                                            <small class="text-muted">Percentage of adult learners interested in innovation</small>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+  											<label for="out-of-state-recruitment" class="form-label">Out of State Recruitment <span id="out-of-state-recruitment-value">10%</span> </label>
+    										<input type="range" class="form-range" id="out-of-state-recruitment" min="0" max="100" value="10">
+    										<small class="text-muted">Percentage of applicants recruited from out of state sources</small>
+  										</div>
+
+                                        
+                                        <h4>Interest Alignment</h4>
+                                        <div class="mb-3">
+                                            <label for="interdisciplinary-interest" class="form-label">Interdisciplinary Interest <span id="interdisciplinary-interest-value">40%</span></label>
+                                            <input type="range" class="form-range" id="interdisciplinary-interest" min="0" max="100" value="40">
+                                            <small class="text-muted">Student interest in interdisciplinary approaches</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ethics-interest" class="form-label">Ethics Interest <span id="ethics-interest-value">35%</span></label>
+                                            <input type="range" class="form-range" id="ethics-interest" min="0" max="100" value="35">
+                                            <small class="text-muted">Student interest in ethics and responsibility</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="social-impact-interest" class="form-label">Social Impact Interest <span id="social-impact-interest-value">45%</span></label>
+                                            <input type="range" class="form-range" id="social-impact-interest" min="0" max="100" value="45">
+                                            <small class="text-muted">Student interest in social impact</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="future-focus-interest" class="form-label">Future-Focus Interest <span id="future-focus-interest-value">50%</span></label>
+                                            <input type="range" class="form-range" id="future-focus-interest" min="0" max="100" value="50">
+                                            <small class="text-muted">Student interest in future-focused approaches</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Interest Distribution</h4>
+                                        <div id="interest-chart" class="chart-container"></div>
+                                        
+                                        <h4>Perceived Value</h4>
+                                        <div class="mb-3">
+                                            <label for="career-clarity" class="form-label">Career Path Clarity <span id="career-clarity-value">60%</span></label>
+                                            <input type="range" class="form-range" id="career-clarity" min="0" max="100" value="60">
+                                            <small class="text-muted">Clarity of career paths for graduates</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="unique-features" class="form-label">Unique Program Features <span id="unique-features-value">75%</span></label>
+                                            <input type="range" class="form-range" id="unique-features" min="0" max="100" value="75">
+                                            <small class="text-muted">Distinctiveness of program features</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="curriculum-flexibility" class="form-label">Curriculum Flexibility <span id="curriculum-flexibility-value">70%</span></label>
+                                            <input type="range" class="form-range" id="curriculum-flexibility" min="0" max="100" value="70">
+                                            <small class="text-muted">Flexibility of curriculum and course options</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Competition Tab -->
+                            <div class="tab-pane fade" id="competition" role="tabpanel" aria-labelledby="competition-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Competitive Landscape</h4>
+                                        <div class="mb-3">
+                                            <label for="similar-programs" class="form-label">Similar Programs <span id="similar-programs-value">2</span></label>
+                                            <input type="range" class="form-range" id="similar-programs" min="0" max="10" value="2">
+                                            <small class="text-muted">Number of similar programs in the region</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="traditional-competition" class="form-label">Traditional Competition <span id="traditional-competition-value">65%</span></label>
+                                            <input type="range" class="form-range" id="traditional-competition" min="0" max="100" value="65">
+                                            <small class="text-muted">Level of competition from traditional programs</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="market-position" class="form-label">Market Position <span id="market-position-value">70%</span></label>
+                                            <input type="range" class="form-range" id="market-position" min="0" max="100" value="70">
+                                            <small class="text-muted">Strength of program's market position</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Competitive Position</h4>
+                                        <div id="competition-chart" class="chart-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Internal Recruitment Tab -->
+                            <div class="tab-pane fade" id="internal" role="tabpanel" aria-labelledby="internal-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>University-Level Recruitment</h4>
+                                        <div class="mb-3">
+                                            <label for="application-visibility" class="form-label">Application Visibility</label>
+                                            <select class="form-select" id="application-visibility">
+                                                <option value="low">Low</option>
+                                                <option value="medium" selected>Medium</option>
+                                                <option value="high">High</option>
+                                            </select>
+                                            <small class="text-muted">Visibility of program in application materials</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="large-program-emphasis" class="form-label">Large Program Emphasis <span id="large-program-emphasis-value">60%</span></label>
+                                            <input type="range" class="form-range" id="large-program-emphasis" min="0" max="100" value="60">
+                                            <small class="text-muted">Emphasis on large, established programs in recruitment</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="university-events" class="form-label">University Events <span id="university-events-value">8</span></label>
+                                            <input type="range" class="form-range" id="university-events" min="0" max="20" value="8">
+                                            <small class="text-muted">Number of university-wide recruitment events per year</small>
+                                        </div>
+                                        
+                                        <h4>College-Level Recruitment</h4>
+                                        <div class="mb-3">
+                                            <label for="recruiter-understanding" class="form-label">Recruiter Understanding <span id="recruiter-understanding-value">50%</span></label>
+                                            <input type="range" class="form-range" id="recruiter-understanding" min="0" max="100" value="50">
+                                            <small class="text-muted">Recruiter understanding of program value proposition</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="program-prioritization" class="form-label">Program Prioritization <span id="program-prioritization-value">45%</span></label>
+                                            <input type="range" class="form-range" id="program-prioritization" min="0" max="100" value="45">
+                                            <small class="text-muted">Priority given to program in college recruitment</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="college-events" class="form-label">College Events <span id="college-events-value">6</span></label>
+                                            <input type="range" class="form-range" id="college-events" min="0" max="20" value="6">
+                                            <small class="text-muted">Number of college-specific recruitment events per year</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tracking-metrics" class="form-label">Tracking Metrics</label>
+                                            <select class="form-select" id="tracking-metrics">
+                                                <option value="minimal">Minimal</option>
+                                                <option value="basic" selected>Basic</option>
+                                                <option value="comprehensive">Comprehensive</option>
+                                            </select>
+                                            <small class="text-muted">Level of tracking and metrics for recruitment</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Recruitment Impact</h4>
+                                        <div id="internal-chart" class="chart-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- External Environment Tab -->
+                            <div class="tab-pane fade" id="external" role="tabpanel" aria-labelledby="external-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>External Factors</h4>
+                                        <div class="mb-3">
+                                            <label for="college-going-rate" class="form-label">College-Going Rate <span id="college-going-rate-value">62%</span></label>
+                                            <input type="range" class="form-range" id="college-going-rate" min="60" max="70" value="62">
+                                            <small class="text-muted">Percentage of high school graduates going to college</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="economic-conditions" class="form-label">Economic Conditions</label>
+                                            <select class="form-select" id="economic-conditions">
+                                                <option value="1">Severe Recession</option>
+                                                <option value="2">Mild Recession</option>
+                                                <option value="3" selected>Stable Economy</option>
+                                                <option value="4">Growing Economy</option>
+                                                <option value="5">Booming Economy</option>
+                                            </select>
+                                            <small class="text-muted">Current economic conditions</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="demographic-trend" class="form-label">Demographic Trend</label>
+                                            <select class="form-select" id="demographic-trend">
+                                                <option value="declining">Declining</option>
+                                                <option value="slightly-declining" selected>Slightly Declining</option>
+                                                <option value="stable">Stable</option>
+                                                <option value="slightly-growing">Slightly Growing</option>
+                                                <option value="growing">Growing</option>
+                                            </select>
+                                            <small class="text-muted">Trend in college-age population</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Demographic Projection</h4>
+                                        <div id="demographic-chart" class="chart-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Analysis Tab -->
+                            <div class="tab-pane fade" id="analysis" role="tabpanel" aria-labelledby="analysis-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Sensitivity Analysis</h4>
+                                        <p>Impact of 20% improvement in each factor on application numbers:</p>
+                                        <div id="sensitivity-chart" class="chart-container"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4>Applicant Sources</h4>
+                                        <div id="sources-chart" class="chart-container"></div>
+                                        
+                                        <div id="recommendations" class="mt-4">
+                                            <h4>Key Insights</h4>
+                                            <ul>
+                                                <li>Increase marketing reach to improve program visibility</li>
+                                                <li>Focus on highlighting interdisciplinary aspects of the program</li>
+                                                <li>Monitor competitive landscape for changes</li>
+                                                <li>Prepare for demographic shifts in target population</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Scenarios Tab -->
+                            <div class="tab-pane fade" id="scenarios" role="tabpanel" aria-labelledby="scenarios-tab">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4>Predefined Scenarios</h4>
+                                        <p>Load predefined scenarios to explore different possibilities:</p>
+                                        
+                                        <div class="row mt-4">
+                                            <div class="col-md-4">
+                                                <div class="card">
+                                                    <div class="card-header bg-info text-white">
+                                                        Optimistic Scenario
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>High visibility, strong student interest, favorable external conditions</p>
+                                                        <button id="optimistic-btn" class="btn btn-outline-info w-100">Load Scenario</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card">
+                                                    <div class="card-header bg-primary text-white">
+                                                        Realistic Scenario
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>Moderate visibility, average student interest, stable external conditions</p>
+                                                        <button id="realistic-btn" class="btn btn-outline-primary w-100">Load Scenario</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card">
+                                                    <div class="card-header bg-warning text-dark">
+                                                        Pessimistic Scenario
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p>Low visibility, limited student interest, challenging external conditions</p>
+                                                        <button id="pessimistic-btn" class="btn btn-outline-warning w-100">Load Scenario</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mt-4">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header bg-secondary text-white">
+                                                        Scenario Comparison
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <h5>Optimistic</h5>
+                                                                <ul>
+                                                                    <li>High marketing reach (60%)</li>
+                                                                    <li>Strong interest alignment (60-70%)</li>
+                                                                    <li>Minimal competition</li>
+                                                                    <li>Strong internal support</li>
+                                                                    <li>Favorable external environment</li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <h5>Realistic</h5>
+                                                                <ul>
+                                                                    <li>Moderate marketing reach (30%)</li>
+                                                                    <li>Average interest alignment (35-50%)</li>
+                                                                    <li>Moderate competition</li>
+                                                                    <li>Limited internal support</li>
+                                                                    <li>Stable external environment</li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <h5>Pessimistic</h5>
+                                                                <ul>
+                                                                    <li>Low marketing reach (15%)</li>
+                                                                    <li>Limited interest alignment (20-35%)</li>
+                                                                    <li>Strong competition from similar and traditional programs</li>
+                                                                    <li>Challenging economic conditions</li>
+                                                                    <li>Declining demographic trends</li>
+                                                                    <li>Limited internal recruitment support</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center">
+            <p>BA in Innovation in Society - Application Projection Model</p>
+            <p class="text-muted small">
+                <strong>Disclaimer:</strong> This model is a conceptual tool designed for exploratory purposes only. 
+                It is based on estimated relationships between factors potentially affecting program applications. 
+                While these are based on web-based research, they have not been empirically validated with real-world data. 
+                The projections should be considered illustrative rather than predictive, and should not be used as the 
+                sole basis for decision-making. The model parameters have been refined to reflect the specific nature of 
+                the BA in Innovation in Society program, but actual outcomes may vary significantly from projections.
+            </p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="model.js"></script>
+    <script src="direct_scenario_loading.js"></script>
+</body>
+</html>
